@@ -4,7 +4,7 @@ module campaign_manager_addr::campaign_manager {
     use aptos_std::type_info;
     
     struct Campaign has store, drop, key {
-        paid: u64,
+        token: String,
         goal: u64,
         recipient: address,
         title: String,
@@ -18,6 +18,7 @@ module campaign_manager_addr::campaign_manager {
 
     public entry fun create_campaign(
         campaign_creator: &signer,
+        token: String,
         goal: u64,
         recipient: address,
         title: String,
@@ -26,7 +27,7 @@ module campaign_manager_addr::campaign_manager {
     )  {
 
         let new_campaign: Campaign = Campaign {
-            paid: 0,
+            token,
             goal,
             recipient,
             title,
@@ -43,9 +44,8 @@ module campaign_manager_addr::campaign_manager {
         amount: u64,
     ) acquires Campaign {
         let campaign = borrow_global_mut<Campaign>(campaign_creator);
-        assert!(type_info::type_name<CoinType>() == string::utf8(b"0x1::aptos_coin::AptosCoin"));
+        assert!(type_info::type_name<CoinType>() == campaign.token);
         transfer<CoinType>(contributor, campaign.recipient, amount);
-        campaign.paid = campaign.paid + amount;
     }
 }
 
