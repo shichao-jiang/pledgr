@@ -1,10 +1,10 @@
 [package]
-name = "MessageBoard"
+name = "CampaignManager"
 version = "1.0.0"
 authors = []
 
 [addresses]
-message_board_addr = "_"
+campaign_manager_addr = "_"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-framework.git", rev = "mainnet", subdir = "aptos-framework" }
