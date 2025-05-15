@@ -4,7 +4,25 @@ module campaign_manager_addr::campaign_manager {
     use aptos_framework::coin::transfer;
     use aptos_std::type_info;
     use aptos_std::table::{Self, Table};
-    use std::debug;
+
+    #[event]
+    struct ContributionEvent has drop, store {
+        contributor: address,
+        campaign_creator: address,
+        amount: u64,
+        campaign_num: u64,
+    }
+
+    #[event]
+    struct CampaignCreatedEvent has drop, store {
+        campaign_creator: address,
+        token: String,
+        goal: u64,
+        recipient: address,
+        title: String,
+        description: String,
+        image_url: vector<String>,
+    }
 
     struct Campaign has store, drop, key {
         token: String,
@@ -48,6 +66,15 @@ module campaign_manager_addr::campaign_manager {
         };
 
         table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
+        0x1::event::emit(CampaignCreatedEvent {
+            campaign_creator: creator_addr,
+            token: token,
+            goal: goal,
+            recipient: recipient,
+            title: title,
+            description: description,
+            image_url: image_url,
+        });
     }
 
     public entry fun contribute_to_campaign<CoinType>(
