@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { HeaderDetailPage } from "@/components/HeaderDetailPage";
 
 //TO DO s
 
@@ -10,7 +11,7 @@ export function CampaignDetails() {
 
   useEffect(() => {
     // Fetch campaign info by ID (you can replace this with actual API or state logic)
-    const allCampaigns = JSON.parse(localStorage.getItem("campaigns") || "[]");
+    const allCampaigns = JSON.parse(localStorage.getItem("initialCampaigns") || "[]");
     const found = allCampaigns.find((c: any) => String(c.id) === id);
     setCampaign(found);
   }, [id]);
@@ -18,6 +19,8 @@ export function CampaignDetails() {
   if (!campaign) return <div>Loading campaign...</div>;
 
   return (
+    <>
+    <HeaderDetailPage/>
     <div className="max-w-7xl mx-auto p-6 space-y-8">
       {/* Banner Image */}
       <div className="w-full h-[400px] bg-cover bg-center rounded-lg" style={{ backgroundImage: `url(${campaign.imageUrl})` }}></div>
@@ -54,5 +57,6 @@ export function CampaignDetails() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CampaignsGrid } from "./components/CampaignGridLayout";
 import { CampaignDetails } from "./components/CampaignDetailsLayout";
 import { useState, useEffect } from "react";
+import HungerImage from "./temp_photos/pexels-henri-mathieu-5898312.jpeg";
   // Sample Data jut for now
   const initialCampaigns = [
   {
@@ -43,7 +44,7 @@ import { useState, useEffect } from "react";
   },
   {
     id: 3,
-    imageUrl: 'https://via.placeholder.com/300',
+    imageUrl: HungerImage,
     title: 'Feed the Hungry',
     description: 'Donate to provide meals to those in need.',
     recipientAddress: '0x789...hunger',
@@ -83,9 +84,18 @@ import { useState, useEffect } from "react";
 function Home() {
   const [campaigns, setCampaigns] = useState<any[]>(initialCampaigns); 
   const { connected } = useWallet();
+
+  console.log("campaigns[2].imageUrl", campaigns[2].imageUrl);
+
+  useEffect(() => {
+    localStorage.setItem("initialCampaigns", JSON.stringify(campaigns));
+  }, [campaigns]);
+  
   const handleCampaignsUpdate = (updatedCampaigns: any[]) => {
     setCampaigns(updatedCampaigns); // Update the state with the new campaigns
   };
+  
+
 
   return (
     <>
