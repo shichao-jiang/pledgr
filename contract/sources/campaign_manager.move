@@ -30,7 +30,6 @@ module campaign_manager_addr::campaign_manager {
 
     public entry fun create_campaign(
         campaign_creator: &signer,
-        num: u64,
         token: String,
         goal: u64,
         recipient: address,
