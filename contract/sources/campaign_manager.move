@@ -6,23 +6,10 @@ module campaign_manager_addr::campaign_manager {
     use aptos_std::table::{Self, Table};
 
     #[event]
-    struct ContributionEvent has drop, store {
-        contributor: address,
-        campaign_creator: address,
-        amount: u64,
-        campaign_num: u64,
-    }
+    struct ContributionEvent has drop, store {}
 
     #[event]
-    struct CampaignCreatedEvent has drop, store {
-        campaign_creator: address,
-        token: String,
-        goal: u64,
-        recipient: address,
-        title: String,
-        description: String,
-        image_url: vector<String>,
-    }
+    struct CampaignCreatedEvent has drop, store {}
 
     struct Campaign has store, drop, key {
         token: String,
@@ -55,7 +42,6 @@ module campaign_manager_addr::campaign_manager {
             });
         };
         let campaign_table = borrow_global_mut<CampaignTable>(creator_addr);
-        campaign_table.next_num += 1;
         let new_campaign = Campaign {
             token,
             goal,
@@ -66,15 +52,8 @@ module campaign_manager_addr::campaign_manager {
         };
 
         table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
-        0x1::event::emit(CampaignCreatedEvent {
-            campaign_creator: creator_addr,
-            token: token,
-            goal: goal,
-            recipient: recipient,
-            title: title,
-            description: description,
-            image_url: image_url,
-        });
+        campaign_table.next_num += 1;
+        0x1::event::emit(CampaignCreatedEvent {});
     }
 
     public entry fun contribute_to_campaign<CoinType>(
@@ -86,6 +65,7 @@ module campaign_manager_addr::campaign_manager {
         let table = borrow_global_mut<CampaignTable>(campaign_creator);
         let campaign = table::borrow(&table.table, campaign_num);
         assert!(type_info::type_name<CoinType>() == campaign.token);
+        0x1::event::emit(ContributionEvent {});
         transfer<CoinType>(contributor, campaign.recipient, amount);
     }
 }
