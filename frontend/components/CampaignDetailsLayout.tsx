@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/button";
 import { HeaderDetailPage } from "@/components/HeaderDetailPage";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { ContributionForm } from "./ContributorPageLayout";
+
 
 //TO DO s
 
 export function CampaignDetails() {
   const { id } = useParams();
   const [campaign, setCampaign] = useState<any>(null);
+  const [showForm, setShowForm] = useState(false);
+
 
   useEffect(() => {
     // Fetch campaign info by ID (you can replace this with actual API or state logic)
@@ -73,12 +77,34 @@ export function CampaignDetails() {
             </div>
 
             <div className="mt-6">
-              <Button className="w-full">Contribute</Button>
+              {/* <Button className="w-full">Contribute</Button> */}
+              <Button className="w-full" onClick={() => setShowForm(true)}>Contribute</Button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    {showForm && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
+          <button
+            onClick={() => setShowForm(false)}
+            className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+          >
+            ×
+          </button>
+
+          <ContributionForm
+            campaignTitle={campaign.title}
+            tokenOptions={["APT", "USDC", "DAI"]}
+            onSubmit={(token, amount) => {
+              console.log("Submitting contribution:", { token, amount });
+              setShowForm(false);
+            }}
+          />
+        </div>
+      </div>
+    )}
     </>
   );
 }

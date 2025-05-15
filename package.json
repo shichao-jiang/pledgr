@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate-template",
+  "name": "test",
   "private": true,
   "version": "0.0.0",
   "license": "Apache-2.0",
@@ -39,7 +39,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/node": "^20.14.1",
+    "@types/node": "^20.17.47",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
@@ -54,9 +54,21 @@
     "prettier": "^3.3.2",
     "tailwindcss": "^3.4.3",
     "tree-kill": "1.2.2",
-    "typescript": "^5.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
     "vercel": "^35.2.4",
     "vite": "^5.2.0",
     "vite-plugin-notifier": "^0.1.5"
-  }
+  },
+  "description": "The Boilerplate template provides a starter dapp with all necessary dapp infrastructure and a simple wallet info implementation, transfer APT and a simple message board functionality to send and read a message on chain.",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shichao-jiang/pledgr.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/shichao-jiang/pledgr/issues"
+  },
+  "homepage": "https://github.com/shichao-jiang/pledgr#readme"
 }

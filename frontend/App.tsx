@@ -17,6 +17,7 @@ import { CampaignDetails } from "./components/CampaignDetailsLayout";
 import { CreateCampaignWallet } from "./components/CampaignWallet";
 import { useState, useEffect } from "react";
 import HungerImage from "./temp_photos/pexels-henri-mathieu-5898312.jpeg";
+import { checkEvents } from "../backend/quickstart";
   // Sample Data jut for now
   const initialCampaigns = [
   {
@@ -81,10 +82,42 @@ import HungerImage from "./temp_photos/pexels-henri-mathieu-5898312.jpeg";
   },
 ];
 
+interface Campaign {
+  imageUrl: string;
+  title: string;
+  description: string;
+  recipientAddress: string;
+  token: string;
+  raised: number;
+  goal: number;
+}
 
 function Home() {
   const [campaigns, setCampaigns] = useState<any[]>(initialCampaigns); 
   const { connected } = useWallet();
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const test = await checkEvents();
+      //console.log("test", test);
+      if (test[0]) {
+        const updatedCampaigns = test.map((campaign: Campaign) => ({
+          ...campaign,
+          id: 0, // Initialize raised amount to 0
+        }));
+        console.log("updatedCampaigns", updatedCampaigns);
+        setCampaigns(updatedCampaigns);
+      } else {
+        console.log("No events found or invalid response.");
+      }
+    };
+  
+    // Run fetchEvents every 5 seconds
+    // const intervalId = setInterval(fetchEvents, 5000);
+  
+    // // Cleanup interval on component unmount
+    // return () => clearInterval(intervalId);
+  }, []);
 
   // console.log("campaigns[2].imageUrl", campaigns[2].imageUrl);
 
