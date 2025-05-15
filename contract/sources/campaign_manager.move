@@ -14,6 +14,7 @@ module campaign_manager_addr::campaign_manager {
     }
 
     struct Campaign has store, drop, key {
+        num: u64,
         token: String,
         goal: u64,
         recipient: address,
@@ -29,6 +30,7 @@ module campaign_manager_addr::campaign_manager {
 
     public entry fun create_campaign(
         campaign_creator: &signer,
+        num: u64,
         token: String,
         goal: u64,
         recipient: address,
@@ -44,7 +46,9 @@ module campaign_manager_addr::campaign_manager {
             });
         };
         let campaign_table = borrow_global_mut<CampaignTable>(creator_addr);
+        campaign_table.next_num += 1;
         let new_campaign = Campaign {
+            num: campaign_table.next_num,
             token,
             goal,
             recipient,
@@ -54,7 +58,6 @@ module campaign_manager_addr::campaign_manager {
         };
 
         table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
-        campaign_table.next_num += 1;
         0x1::event::emit(CampaignCreatedEvent {});
     }
  
