@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeaderDetailPage } from "@/components/HeaderDetailPage";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 //TO DO s
 
@@ -23,29 +25,49 @@ export function CampaignDetails() {
     <HeaderDetailPage/>
     <div className="max-w-7xl mx-auto p-6 space-y-8">
       {/* Banner Image */}
-      <div className="w-full h-[400px] bg-cover bg-center rounded-lg" style={{ backgroundImage: `url(${campaign.imageUrl})` }}></div>
+      <div className="w-full aspect-[16/5] bg-cover bg-center rounded-lg" style={{ backgroundImage: `url(${campaign.imageUrl})` }}></div>
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side (Title, Description) */}
         <div className="flex-1">
           <h1 className="text-4xl font-bold mb-4">{campaign.title}</h1>
           <p className="text-lg text-gray-700 mb-6">{campaign.description}</p>
-
-          {/* Add other campaign details here (like progress, raised amount, etc.) */}
-          <p className="text-lg text-gray-700 mb-6">
-            ${campaign.raised.toLocaleString()} raised of ${campaign.goal.toLocaleString()}
-          </p>
         </div>
 
         {/* Right Side (Contributor Info + Contribute Button) */}
-        <div className="w-full lg:w-[300px] bg-gray-100 p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Contributor Info</h2>
+        <div className="w-full lg:w-1/3 bg-gray-100 p-6 rounded-lg shadow-md">
+          <div className="flex items-center justify-between mb-6">
+            {/* Raised Amount Info on the left */}
+            <div className="text-left">
+              <h2 className="text-3xl font-bold text-gray-900">
+                ${campaign.raised.toLocaleString()} raised
+              </h2>
+              <p className="text-sm text-gray-500">
+                of ${campaign.goal.toLocaleString()} goal
+              </p>
+            </div>
+
+            {/* Circular Progress on the right */}
+            <div className="w-20 h-20">
+              <CircularProgressbar
+                value={Math.min((campaign.raised / campaign.goal) * 100, 100)}
+                text={`${Math.round(Math.min((campaign.raised / campaign.goal) * 100, 100))}%`}
+                styles={buildStyles({
+                  textColor: "#111827",       // text-gray-900
+                  pathColor: "#3b82f6",       // blue-500
+                  trailColor: "#e5e7eb",      // gray-200
+                  textSize: "16px",
+                })}
+              />
+            </div>
+          </div>
+
           <div className="space-y-4">
             <div className="flex justify-between text-sm">
               <span className="font-medium">Status:</span>
               <span>{campaign.status}</span>
             </div>
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-sm">  
               <span className="font-medium">End Date:</span>
               <span>{new Date(campaign.endDate).toLocaleDateString()}</span>
             </div>

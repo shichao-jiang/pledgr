@@ -1,3 +1,4 @@
+import { log } from "console";
 import { useState, useEffect } from "react";
 
 export function SearchCampaign({
@@ -69,7 +70,7 @@ export function SearchCampaign({
           status: 'active',
           endDate: '2025-09-15',
         },
-    ];
+      ];
    const [query, setQuery] = useState("");
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +83,7 @@ export function SearchCampaign({
       const filteredCampaigns = initialCampaigns.filter((campaign) =>
         campaign.title.toLowerCase().includes(value.toLowerCase())
       );
+      console.log("filteredCampaigns", filteredCampaigns)
       onCampaignsUpdate(filteredCampaigns); // Send filtered campaigns back to the parent
     };
   

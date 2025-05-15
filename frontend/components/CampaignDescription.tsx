@@ -40,20 +40,33 @@ export function CreateCampaignDescription() {
     <span className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center" style={{ marginTop: "6%" }}>Pledgr</span>
   </span>
           <h1 className="text-1xl">2 of 4</h1>
-          <h1 className="text-5xl font-bold">Tell Us Why You're Campaigning</h1>
-          <p className="text-gray-400"></p>
+          <h1 className="text-5xl font-bold text-center">Tell Us Why You're Campaigning</h1>
+          <p className="text-gray-400 text-center"></p>
         </div>
-        <div className="right flex flex-col h-full">
+        <div className="right flex flex-col h-full w-full">
   {/* Starting Goal and Input at 60% height */}
-  <div className="flex flex-col space-y-4 w-4/5 mx-auto" style={{ marginTop: "20%" }}>
+  <div className="flex flex-col space-y-4 w-4/5 mx-auto mt-auto">
   <h1 className="font-bold">Your Campaign Title:</h1>
   <Input placeholder="Description" onChange={(e) => setCampaignTitle(e.target.value)} />
   <h1 className="font-bold">Your Story:</h1>
-  <Input placeholder="Description" onChange={(e) => setCampaignDescription(e.target.value)} style={{ height: "30vh" }}/>
+  <textarea
+  placeholder="Description"
+  onChange={(e) => setCampaignDescription(e.target.value)}
+  className="w-full p-2 border rounded-md bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+  style={{ height: "30vh", resize: "none" }}
+/>
 </div>
 
   {/* Buttons at the bottom */}
-  <div className="flex justify-between w-full mt-auto p-4">
+  <div className="flex flex-col w-full px-4 mt-auto">
+    <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+      <div
+        className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+        style={{ width: "50%" }} // Adjust width based on the current step
+      ></div>
+    </div>
+  </div>
+  <div className="flex justify-end justify-between w-full">
     <Button className="self-start" onClick={() => navigate("/create")}>Back</Button>
     <Button className="self-end" onClick={() => navigate("/image")} disabled={!campaignTitle || !campaignDescription}>Continue</Button>
   </div>

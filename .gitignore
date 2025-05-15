@@ -2,6 +2,7 @@
 .aptos
 .env
 contract/build
+/backend
 
 # Logs
 logs

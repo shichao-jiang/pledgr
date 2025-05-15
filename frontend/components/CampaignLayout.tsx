@@ -15,6 +15,7 @@ export function CreateCampaign() {
   const [recipientId, setRecipientId] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [goalAmount, setGoalAmount] = useState<number>();
+  const [token, setToken] = useState("USD");
   const navigate = useNavigate();
   
   const closeDialog = useCallback(() => setIsDialogOpen(false), []);
@@ -54,19 +55,42 @@ export function CreateCampaign() {
     <span className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center" style={{ marginTop: "6%" }}>Pledgr</span>
   </span>
           <h1>1 of 4</h1>
-          <h1 className="text-5xl font-bold">Set Your Goal</h1>
-          <p className="text-gray-400">TEMP</p>
+          <h1 className="text-5xl font-bold text-center">Set Your Goal</h1>
+          <p className="text-gray-40 text-center">TEMP</p>
         </div>
-        <div className="right flex flex-col h-full">
+        <div className="right flex flex-col h-full w-full">
   {/* Starting Goal and Input at 60% height */}
-  <div className="flex flex-col space-y-4 w-4/5 mx-auto" style={{ marginTop: "37%" }}>
+  <div className="flex flex-col space-y-4 w-4/5 mx-auto mt-auto">
   <h1 className="font-bold">Your Starting Goal:</h1>
-  <Input placeholder="$100" onChange={(e) => setGoalAmount(parseFloat(e.target.value))} />
+  <div className="relative">
+  <Input
+    placeholder="$100"
+    onChange={(e) => setGoalAmount(parseFloat(e.target.value))}
+    className="pr-20" // Add padding to the right to make space for the dropdown
+  />
+  <select
+    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent border-none text-gray-500 focus:outline-none"
+    onChange={(e) => setToken(e.target.value)} // Replace with your currency handling logic
+  >
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="GBP">GBP</option>
+    <option value="JPY">JPY</option>
+  </select>
+</div>
 </div>
 
   {/* Buttons at the bottom */}
-  <div className="flex mt-auto p-4">
-    <Button className="self-end" onClick={() => navigate("/description")} disabled={!goalAmount}>Continue</Button>
+  <div className="flex flex-col w-full px-4 mt-auto">
+    <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+      <div
+        className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+        style={{ width: "25%" }} // Adjust width based on the current step
+      ></div>
+    </div>
+  </div>
+  <div className="flex justify-end">
+    <Button className="self-end" onClick={() => navigate("/description")} disabled={!goalAmount || !token}>Continue</Button>
   </div>
 </div>
         </div>
