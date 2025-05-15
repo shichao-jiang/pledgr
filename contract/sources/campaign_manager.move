@@ -1,8 +1,11 @@
 module campaign_manager_addr::campaign_manager {
-    use std::string::{Self, String};
+    use std::string::{String};
+    use std::signer;
     use aptos_framework::coin::transfer;
     use aptos_std::type_info;
-    
+    use aptos_std::table::{Self, Table};
+    use std::debug;
+
     struct Campaign has store, drop, key {
         token: String,
         goal: u64,
@@ -12,9 +15,10 @@ module campaign_manager_addr::campaign_manager {
         image_url: vector<String>,
     }
 
-    // struct CampaignList has store, drop, key {
-    //     list: Vec<Campaign>
-    // }
+    struct CampaignTable has store, key {
+        table: Table<u64, Campaign>,
+        next_num: u64,
+    }
 
     public entry fun create_campaign(
         campaign_creator: &signer,
@@ -24,9 +28,17 @@ module campaign_manager_addr::campaign_manager {
         title: String,
         description: String,
         image_url: vector<String>,
-    )  {
-
-        let new_campaign: Campaign = Campaign {
+    ) acquires CampaignTable {
+        let creator_addr = signer::address_of(campaign_creator);
+        if (!exists<CampaignTable>(creator_addr)) {
+            move_to<CampaignTable>(campaign_creator, CampaignTable { 
+                table: table::new(), 
+                next_num: 0,
+            });
+        };
+        let campaign_table = borrow_global_mut<CampaignTable>(creator_addr);
+        campaign_table.next_num += 1;
+        let new_campaign = Campaign {
             token,
             goal,
             recipient,
@@ -34,33 +46,19 @@ module campaign_manager_addr::campaign_manager {
             description,
             image_url,
         };
-        
-        move_to<Campaign>(campaign_creator, new_campaign);
+
+        table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
     }
 
     public entry fun contribute_to_campaign<CoinType>(
         contributor: &signer,
         campaign_creator: address,
+        campaign_num: u64,
         amount: u64,
-    ) acquires Campaign {
-        let campaign = borrow_global_mut<Campaign>(campaign_creator);
+    ) acquires CampaignTable {
+        let table = borrow_global_mut<CampaignTable>(campaign_creator);
+        let campaign = table::borrow(&table.table, campaign_num);
         assert!(type_info::type_name<CoinType>() == campaign.token);
         transfer<CoinType>(contributor, campaign.recipient, amount);
     }
 }
-
-// script {
-//     use campaign_manager_addr::campaign_manager;
-//     use std::string::String;
-//     use std::vector;
-
-//     fun main() {
-//         let goal: u64 = 1000;
-//         let recipient: address = 0x33; // Get the recipient address
-//         let title: String = b"My Campaign".to_string();
-//         let description: String = b"This is a test campaign".to_string();
-//         let image_url: vector<String> = vector[b"http://example.com/image1.png".to_string()];
-
-//         campaign_manager::create_campaign(0x3d67821fbb753aebd79461ca0a1e3bd43c54de7fbd082b7a54ede1f02ce21a8e, goal, recipient, title, description, image_url);
-//     }
-// }
