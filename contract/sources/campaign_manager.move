@@ -6,10 +6,12 @@ module campaign_manager_addr::campaign_manager {
     use aptos_std::table::{Self, Table};
 
     #[event]
-    struct ContributionEvent has drop, store {}
+    struct ContributionEvent has drop, store {
+    }
 
     #[event]
-    struct CampaignCreatedEvent has drop, store {}
+    struct CampaignCreatedEvent has drop, store {
+    }
 
     struct Campaign has store, drop, key {
         token: String,
@@ -55,7 +57,7 @@ module campaign_manager_addr::campaign_manager {
         campaign_table.next_num += 1;
         0x1::event::emit(CampaignCreatedEvent {});
     }
-
+ 
     public entry fun contribute_to_campaign<CoinType>(
         contributor: &signer,
         campaign_creator: address,
