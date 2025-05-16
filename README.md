@@ -28,7 +28,7 @@ The smart contract is published once at a known Aptos address. Users can initiat
 
 ## Detailed Video Explanation
 
-[Include Link to Loom Video Explaining Project and GitHub Structure]
+https://github.com/shichao-jiang/pledgr/blob/main/docs/videos/Pledgr_long_demo.mp4
 
 What's Covered:
 
