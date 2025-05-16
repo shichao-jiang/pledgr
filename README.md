@@ -6,10 +6,13 @@ Pledgr is a decentralized crowdfunding platform built on the Aptos blockchain, d
 
 ## Demo Video
 
-[Include Link to Demo Video Here]
+https://github.com/shichao-jiang/pledgr/blob/main/docs/videos/Pledgr_Short_Demo.mp4
 
 ## Screenshots
 
+![](./docs/imgs/mainPage.png)
+![](./docs/imgs/CreatePage.png)
+![](./docs/imgs/ContributorPage.png)
 
 ## How it Works
 
