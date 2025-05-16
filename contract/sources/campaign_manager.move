@@ -73,6 +73,7 @@ module campaign_manager_addr::campaign_manager {
         fungible_asset::create_store(&constructor_ref, fa_metadata);
         let escrow_address = object::address_from_constructor_ref(&constructor_ref);
 
+        //TODO: use escrow address alone to create the object
         table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
         0x1::event::emit(CampaignCreatedEvent { campaign_num: campaign_table.next_num, escrow_address });
     }
