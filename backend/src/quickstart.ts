@@ -1,6 +1,6 @@
-import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+import { Account, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
-const CONTRACT_ADDRESS = "0x187cbc10c7d40c131e9d9491a5f56bfa2ecce8831ad7b85621622c9ae5b70174";
+const CONTRACT_ADDRESS = "0x3ca8983ddcb73a19cedee0ea857b5113b6a151fa13e343b49178ec7d48d8c867";
 
 async function check_events() {
     // Create a new Aptos client with Testnet configuration
@@ -8,8 +8,29 @@ async function check_events() {
     const aptos = new Aptos(config);
 
     
-    const fungibleAssetActivities = await aptos.getFungibleAssetMetadata({minimumLedgerVersion: 0, options: {limit: 1}});
-    console.log(fungibleAssetActivities);
+    const fungibleAssetActivities = await aptos.getFungibleAssetMetadataByAssetType({assetType: "0x1::aptos_coin::AptosCoin"});
+    
+    const sender = Account.generate();
+    const transaction = await aptos.transaction.build.simple({
+        sender: sender.accountAddress,
+        data: {
+            function: "0x3ca8983ddcb73a19cedee0ea857b5113b6a151fa13e343b49178ec7d48d8c867::campaign_manager::create_campaign",
+            functionArguments: [
+                Object(fungibleAssetActivities),
+                10,
+                "0x3ca8983ddcb73a19cedee0ea857b5113b6a151fa13e343b49178ec7d48d8c867",
+                "test",
+                "test",
+                ["test"],
+            ]
+        }
+    });
+
+    const response = await aptos.signAndSubmitTransaction({
+        signer: sender,
+        transaction,
+    });
+    console.log(response);
 
     // aptos.getTransactionByVersion({ledgerVersion: 37858249})
     //     .then((transaction) => {
