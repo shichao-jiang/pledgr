@@ -10,9 +10,25 @@ import { ConnectWalletDialog } from "@/components/WalletSelector";
 import "@/App.css";
 
 export function CreateCampaignDescription() {
-  const [campaignDescription, setCampaignDescription] = useState<String>();
-  const [campaignTitle, setCampaignTitle] = useState<String>();
+  const [campaignDescription, setCampaignDescription] = useState<string>();
+  const [campaignTitle, setCampaignTitle] = useState<string>();
   const navigate = useNavigate();
+ 
+  useEffect(() => {
+    const savedCampaignDescription = localStorage.getItem("campaignDescription");
+      const savedCampaignTitle = localStorage.getItem("campaignTitle");
+      if (savedCampaignDescription) setCampaignDescription(savedCampaignDescription);
+      if (savedCampaignTitle) setCampaignTitle(savedCampaignTitle);
+  }
+  , []);
+  useEffect(() => {
+    if (campaignDescription !== null && campaignDescription !== undefined) {
+      localStorage.setItem("campaignDescription", campaignDescription.toString());
+    }
+    if (campaignTitle !== null && campaignTitle !== undefined) {
+      localStorage.setItem("campaignTitle", campaignTitle.toString());
+    }
+  }, [campaignDescription, campaignTitle]);
 
   return (
     <div className="relative">
@@ -39,7 +55,7 @@ export function CreateCampaignDescription() {
     </svg>
     <span className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center" style={{ marginTop: "6%" }}>Pledgr</span>
   </span>
-          <h1 className="text-1xl">2 of 4</h1>
+          <h1 className="text-1xl">2 of 5</h1>
           <h1 className="text-5xl font-bold text-center">Tell Us Why You're Campaigning</h1>
           <p className="text-gray-400 text-center"></p>
         </div>
@@ -47,10 +63,11 @@ export function CreateCampaignDescription() {
   {/* Starting Goal and Input at 60% height */}
   <div className="flex flex-col space-y-4 w-4/5 mx-auto mt-auto">
   <h1 className="font-bold">Your Campaign Title:</h1>
-  <Input placeholder="Description" onChange={(e) => setCampaignTitle(e.target.value)} />
+  <Input placeholder="Description" value={campaignTitle || ""} onChange={(e) => setCampaignTitle(e.target.value)} />
   <h1 className="font-bold">Your Story:</h1>
   <textarea
   placeholder="Description"
+  value={campaignDescription || ""}
   onChange={(e) => setCampaignDescription(e.target.value)}
   className="w-full p-2 border rounded-md bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
   style={{ height: "30vh", resize: "none" }}
@@ -62,7 +79,7 @@ export function CreateCampaignDescription() {
     <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
       <div
         className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
-        style={{ width: "50%" }} // Adjust width based on the current step
+        style={{ width: "40%" }} // Adjust width based on the current step
       ></div>
     </div>
   </div>

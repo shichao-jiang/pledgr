@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CampaignsGrid } from "./components/CampaignGridLayout";
 import { CampaignDetails } from "./components/CampaignDetailsLayout";
 import { CreateCampaignWallet } from "./components/CampaignWallet";
+import { CreateCampaignReview } from "./components/CapaignReview";
 import { useState, useEffect } from "react";
 import HungerImage from "./temp_photos/pexels-henri-mathieu-5898312.jpeg";
 import { checkEvents } from "../backend/quickstart";
@@ -83,28 +84,26 @@ import { checkEvents } from "../backend/quickstart";
 ];
 
 interface Campaign {
+  campaign_num: number;
+  id: string;
   imageUrl: string;
   title: string;
   description: string;
   recipientAddress: string;
   token: string;
   raised: number;
+  amount_donations: number;
   goal: number;
 }
-
 function Home() {
-  const [campaigns, setCampaigns] = useState<any[]>(initialCampaigns); 
+  const [campaigns, setCampaigns] = useState<any[]>([]); 
   const { connected } = useWallet();
 
   useEffect(() => {
     const fetchEvents = async () => {
       const test = await checkEvents();
-      //console.log("test", test);
       if (test[0]) {
-        const updatedCampaigns = test.map((campaign: Campaign) => ({
-          ...campaign,
-          id: 0, // Initialize raised amount to 0
-        }));
+        const updatedCampaigns = test;
         console.log("updatedCampaigns", updatedCampaigns);
         setCampaigns(updatedCampaigns);
       } else {
@@ -112,6 +111,8 @@ function Home() {
       }
     };
   
+    // Fetch events immediately
+    fetchEvents();
     // Run fetchEvents every 5 seconds
     // const intervalId = setInterval(fetchEvents, 5000);
   
@@ -128,6 +129,16 @@ function Home() {
   const handleCampaignsUpdate = (updatedCampaigns: any[]) => {
     setCampaigns(updatedCampaigns); // Update the state with the new campaigns
   };
+
+  useEffect(() => {
+      localStorage.removeItem("goalAmount");
+      localStorage.removeItem("token");
+      localStorage.removeItem("campaignDescription");
+      localStorage.removeItem("campaignImage");
+      localStorage.removeItem("imageSrc");
+      localStorage.removeItem("campaignWallet");
+      localStorage.removeItem("campaignTitle");
+  });
   
 
 
@@ -170,6 +181,7 @@ function App() {
         <Route path="/description" element={<CreateCampaignDescription />} />
         <Route path="/image" element={<CreateCampaignImage />} />
         <Route path="/wallet" element={<CreateCampaignWallet />} />
+        <Route path="/review" element={<CreateCampaignReview />} />
         <Route path="/campaign/:id" element={<CampaignDetails />} />
       </Routes>
     </Router>

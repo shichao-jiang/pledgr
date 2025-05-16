@@ -5,11 +5,11 @@ import { HeaderDetailPage } from "@/components/HeaderDetailPage";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { ContributionForm } from "./ContributorPageLayout";
-
-
-//TO DO s
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
+import { ConnectWalletDialog } from "@/components/WalletSelector"
 
 export function CampaignDetails() {
+  const { connected } = useWallet()
   const { id } = useParams();
   const [campaign, setCampaign] = useState<any>(null);
   const [showForm, setShowForm] = useState(false);
@@ -47,8 +47,8 @@ export function CampaignDetails() {
                 ${campaign.raised.toLocaleString()} raised
               </h2>
               <p className="text-sm text-gray-500">
-                of ${campaign.goal.toLocaleString()} goal
-              </p>
+                ${campaign.goal.toLocaleString()} goal · {campaign.amount_donations} donations 
+              </p>  
             </div>
 
             {/* Circular Progress on the right */}
@@ -95,12 +95,23 @@ export function CampaignDetails() {
           </button>
 
           <ContributionForm
-            campaignTitle={campaign.title}
-            tokenOptions={["APT", "USDC", "DAI"]}
+            campaign={{
+                campaign_num: campaign.campaign_num,
+                id: campaign.id,
+                imageUrl: campaign.imageUrl,
+                title: campaign.title,
+                description: campaign.description,
+                recipientAddress: campaign.recipientAddress,
+                token: campaign.token,
+                raised: campaign.raised,
+                amount_donations: campaign.amount_donations,
+                goal: campaign.goal,
+            }}
             onSubmit={(token, amount) => {
               console.log("Submitting contribution:", { token, amount });
               setShowForm(false);
             }}
+            close={() => setShowForm(false)} // 👈 added
           />
         </div>
       </div>

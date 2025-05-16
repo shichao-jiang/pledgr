@@ -1,5 +1,6 @@
 import { log } from "console";
 import { useState, useEffect } from "react";
+import { checkEvents } from "../../backend/quickstart";
 
 export function SearchCampaign({
     campaigns,
@@ -72,15 +73,33 @@ export function SearchCampaign({
         },
       ];
    const [query, setQuery] = useState("");
+   const [initialCampaignsState, setInitialCampaignsState] = useState<any[]>([]);
+
+    //  useEffect(() => {
+    //     localStorage.setItem("initialCampaigns", JSON.stringify(campaigns));
+    //   }, [campaigns]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const fetchEvents = async () => {
+            const test = await checkEvents();
+            if (test) {
+              const updatedCampaigns = test;
+              console.log("updatedCampaigns", updatedCampaigns);
+              setInitialCampaignsState(updatedCampaigns);
+            } else {
+              console.log("No events found or invalid response.");
+            }
+          };
+        
+          // Fetch events immediately
+            fetchEvents();
       const value = e.target.value;
       setQuery(value);
     //   if (query.trim() === "") {
     //     onCampaignsUpdate(initialCampaigns); // Reset to original campaigns if query is empty
     //     return;
     //   }
-      const filteredCampaigns = initialCampaigns.filter((campaign) =>
+      const filteredCampaigns = initialCampaignsState.filter((campaign) =>
         campaign.title.toLowerCase().includes(value.toLowerCase())
       );
       console.log("filteredCampaigns", filteredCampaigns)

@@ -15,10 +15,12 @@ export function CreateCampaign() {
   const [recipientId, setRecipientId] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [goalAmount, setGoalAmount] = useState<number>();
-  const [token, setToken] = useState("USD");
+  const [token, setToken] = useState<string>();
   const navigate = useNavigate();
   
   const closeDialog = useCallback(() => setIsDialogOpen(false), []);
+
+  
 
   useEffect(() => {
     if (!connected) {
@@ -26,7 +28,20 @@ export function CreateCampaign() {
     } else {
       setShowModal(false); // Hide modal when wallet is connected
     }
+    const savedGoalAmount = localStorage.getItem("goalAmount");
+      const savedToken = localStorage.getItem("token");
+      if (savedGoalAmount) setGoalAmount(parseFloat(savedGoalAmount));
+      if (savedToken) setToken(savedToken);
   }, [connected]);
+
+  useEffect(() => {
+    if (goalAmount !== null && goalAmount !== undefined) {
+      localStorage.setItem("goalAmount", goalAmount.toString());
+    }
+    if (token !== null && token !== undefined) {
+      localStorage.setItem("token", token);
+    }
+  }, [goalAmount, token]);
 
   return (
     <div className="relative">
@@ -54,7 +69,7 @@ export function CreateCampaign() {
     </svg>
     <span className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center" style={{ marginTop: "6%" }}>Pledgr</span>
   </span>
-          <h1>1 of 4</h1>
+          <h1>1 of 5</h1>
           <h1 className="text-5xl font-bold text-center">Set Your Goal</h1>
           <p className="text-gray-40 text-center">TEMP</p>
         </div>
@@ -65,11 +80,13 @@ export function CreateCampaign() {
   <div className="relative">
   <Input
     placeholder="$100"
+    value={goalAmount || ""}
     onChange={(e) => setGoalAmount(parseFloat(e.target.value))}
     className="pr-20" // Add padding to the right to make space for the dropdown
   />
   <select
     className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent border-none text-gray-500 focus:outline-none"
+    value={token}
     onChange={(e) => setToken(e.target.value)} // Replace with your currency handling logic
   >
     <option value="USD">USD</option>
@@ -85,7 +102,7 @@ export function CreateCampaign() {
     <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
       <div
         className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
-        style={{ width: "25%" }} // Adjust width based on the current step
+        style={{ width: "20%" }} // Adjust width based on the current step
       ></div>
     </div>
   </div>

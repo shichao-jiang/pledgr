@@ -16,7 +16,19 @@ import {
     const { account, connected, disconnect, wallet } = useWallet();
     console.log("Account:", account);
     console.log("Connected:", account?.address.data.toString());
-  
+    
+    useEffect(() => {
+        const savedWallet = localStorage.getItem("campaignWallet");
+          if (savedWallet) setCampaignWallet(savedWallet);
+      }
+      , []);
+      useEffect(() => {
+        if (campaignWallet !== null && campaignWallet !== undefined) {
+          localStorage.setItem("campaignWallet", campaignWallet.toString());
+        }
+      }, [campaignWallet]);
+    
+
     return (
       <div className="relative">
         {/* Blur effect when modal is active */}
@@ -42,7 +54,7 @@ import {
       </svg>
       <span className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center" style={{ marginTop: "6%" }}>Pledgr</span>
     </span>
-            <h1 className="text-1xl">4 of 4</h1>
+            <h1 className="text-1xl">4 of 5</h1>
             <h1 className="text-5xl font-bold text-center">Select Wallet Address</h1>
             <p className="text-gray-400 text-center">A strong, high-quality image creates a connection and makes your page more visually appealing.</p>
           </div>
@@ -70,13 +82,13 @@ import {
       <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
         <div
           className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
-          style={{ width: "100%" }} // Adjust width based on the current step
+          style={{ width: "80%" }} // Adjust width based on the current step
         ></div>
       </div>
     </div>
     <div className="flex justify-end justify-between w-full">
       <Button className="self-start" onClick={() => navigate("/image")}>Back</Button>
-      <Button className="self-end" onClick={() => navigate("/wallet")} disabled={!campaignWallet}>Create Campaign</Button>
+      <Button className="self-end" onClick={() => navigate("/review")} disabled={!campaignWallet}>Review</Button>
     </div>
   </div>
           </div>
