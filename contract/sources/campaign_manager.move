@@ -65,7 +65,7 @@ module campaign_manager_addr::campaign_manager {
             image_url,
         };
 
-        let constructor_ref = object::create_object(creator_addr); // TODO: is this an issue?
+        let constructor_ref = object::create_object(creator_addr);
         let object_signer = object::generate_signer(&constructor_ref);
         let extend_ref = object::generate_extend_ref(&constructor_ref);
         
@@ -75,11 +75,10 @@ module campaign_manager_addr::campaign_manager {
         let escrow_address = object::address_from_constructor_ref(&constructor_ref);
 
         table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
-        campaign_table.next_num += 1;
         0x1::event::emit(CampaignCreatedEvent {escrow_address});
     }
  
-    public entry fun contribute_to_campaign<CoinType>(
+    public entry fun contribute_to_campaign(
         contributor: &signer,
         campaign_creator: address,
         campaign_num: u64,
@@ -91,15 +90,19 @@ module campaign_manager_addr::campaign_manager {
         let campaign = table::borrow(&table.table, campaign_num);
 
         let escrow_obj = object::address_to_object<FungibleStore>(escrow_address);
-        let extend_ref = &borrow_global<ObjectController>(escrow_address).extend_ref;
-        let object_signer = object::generate_signer_for_extending(extend_ref);
+        let contributor_addr = signer::address_of(contributor);
         
-        let user_primary_store = primary_fungible_store::primary_store_inlined(signer::address_of(contributor), fa_metadata);
-        dispatchable_fungible_asset::transfer(&object_signer, user_primary_store, escrow_obj, amount);
+        let user_primary_store = primary_fungible_store::primary_store_inlined(contributor_addr, fa_metadata);
+        dispatchable_fungible_asset::transfer(contributor, user_primary_store, escrow_obj, amount);
         0x1::event::emit(ContributionEvent {});
-    
-        // TODO: do only if goal is reached
-        let recipient_primary_store = primary_fungible_store::primary_store_inlined(campaign.recipient, fa_metadata);
-        dispatchable_fungible_asset::transfer(&object_signer, escrow_obj, recipient_primary_store, amount);
+
+        if (primary_fungible_store::balance(escrow_address, fa_metadata) >= campaign.goal) {
+            let extend_ref = &borrow_global<ObjectController>(escrow_address).extend_ref;
+            let object_signer = object::generate_signer_for_extending(extend_ref);
+
+            let recipient_primary_store = primary_fungible_store::primary_store_inlined(campaign.recipient, fa_metadata);
+            dispatchable_fungible_asset::transfer(&object_signer, escrow_obj, recipient_primary_store, amount);
+            // TODO: maybe emit event?
+        };
     }
 }
