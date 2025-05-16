@@ -65,8 +65,8 @@ export function CampaignDetails() {
 
             <div className="space-y-4">
               <div className="flex justify-between text-sm">
-                <span className="font-medium">Status:</span>
-                <span>{campaign.status}</span>
+                {/* <span className="font-medium">Status:</span>
+                <span>{campaign.status}</span> */}
               </div>
               <div className="flex justify-between text-sm">
                 <span className="font-medium">End Date:</span>

@@ -15,10 +15,11 @@ export function CampaignBox({ campaign }: { campaign: any }) {
           {/* Progress Bar */}
           <div className="mt-6 flex flex-col w-full max-w-md mx-auto">
             <Progress value={progressPercent} className="w-[250px] mb-3 h-3 justify-left rounded-full bg-gray-200" />
-            <p className="text-xs text-gray-600 justify-left">
-              ${campaign.raised.toLocaleString()} raised of ${campaign.goal.toLocaleString()} {campaign.token}
+            <p className="text-xs font-bold text-gray-600 justify-left">
+              ${campaign.raised.toLocaleString()} raised of ${campaign.goal.toLocaleString()}{" "}
+              <span className="font-normal">{campaign.token}</span>
             </p>
-            <p className="text-xs text-gray-500 italic">Status: {campaign.status}</p>
+            {/* <p className="text-xs text-gray-500 italic">Status: {campaign.status}</p> */}
           </div>
           <div className="mt-6 flex justify-end w-2/3">
             <Link to={`/campaign/${campaign.id}`}>

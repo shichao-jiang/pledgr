@@ -27,7 +27,7 @@ export function CreateCampaignDescription() {
   return (
     <div className="relative">
       {/* Blur effect when modal is active */}
-      <div className="flex w-full" style={{ backgroundColor: "#f0f0f0" }}>
+      <div className="flex w-full h-screen" style={{ backgroundColor: "#f0f0f0" }}>
         <div className="left flex flex-col items-center justify-center space-y-4">
           <span
             onClick={() => navigate("/")}
@@ -50,22 +50,31 @@ export function CreateCampaignDescription() {
               Pledgr
             </span>
           </span>
-          <h1 className="text-1xl">2 of 5</h1>
+          <h1 className="text-1xl" style={{ marginTop: "35%" }}>
+            2 of 5
+          </h1>
           <h1 className="text-5xl font-bold text-center">Tell Us Why You're Campaigning</h1>
-          <p className="text-gray-400 text-center"></p>
+          <div className="text-gray-400 text-left mt-12 mb-10 px-4" style={{ marginTop: "10%" }}>
+            <p className="mb-6">Some ideas to help you start writing:</p>
+            <ul className="list-disc list-inside space-y-4">
+              <li>Introduce yourself and what you're raising funds for</li>
+              <li>Describe why it's important to you</li>
+              <li>Explain how the funds will be used</li>
+            </ul>
+          </div>
         </div>
         <div className="right flex flex-col h-full w-full">
           {/* Starting Goal and Input at 60% height */}
           <div className="flex flex-col space-y-4 w-4/5 mx-auto mt-auto">
             <h1 className="font-bold">Your Campaign Title:</h1>
             <Input
-              placeholder="Description"
+              placeholder="I wish to contribute to..."
               value={campaignTitle || ""}
               onChange={(e) => setCampaignTitle(e.target.value)}
             />
             <h1 className="font-bold">Your Story:</h1>
             <textarea
-              placeholder="Description"
+              placeholder="Hi, my name is Tyler. I'm starting a campaign to..."
               value={campaignDescription || ""}
               onChange={(e) => setCampaignDescription(e.target.value)}
               className="w-full p-2 border rounded-md bg-background ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -75,15 +84,15 @@ export function CreateCampaignDescription() {
 
           {/* Buttons at the bottom */}
           <div className="flex flex-col w-full px-4 mt-auto">
-            <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+            <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
-                className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+                className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
                 style={{ width: "40%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>
           <div className="flex justify-end justify-between w-full">
-            <Button className="self-start" onClick={() => navigate("/create")}>
+            <Button variant={"lightGrey"} className="self-start" onClick={() => navigate("/create")}>
               Back
             </Button>
             <Button

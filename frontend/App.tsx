@@ -122,23 +122,6 @@ function Home() {
       {/* <TopBanner /> */}
       <Header campaigns={campaigns} onCampaignsUpdate={handleCampaignsUpdate} />
       <div className="flex items-center justify-center flex-col">
-        {/* {connected ? (
-          <Card>
-            <CardContent className="flex flex-col gap-10 pt-6">
-              <WalletDetails />
-              <NetworkInfo />
-              <AccountInfo />
-              <TransferAPT />
-              <MessageBoard />
-            </CardContent>
-          </Card>
-        ) : (
-          <CardHeader>
-            <CardTitle>To get started Connect a wallet</CardTitle>
-          </CardHeader>
-        )} */}
-
-        {/* Display the Campaigns Grid */}
         <CampaignsGrid campaigns={campaigns} />
       </div>
     </>

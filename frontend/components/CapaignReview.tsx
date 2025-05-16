@@ -1,13 +1,9 @@
 import { useWallet, InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DialogTrigger, Dialog } from "@/components/ui/dialog";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ConnectWalletDialog } from "@/components/WalletSelector";
 import "@/App.css";
-import { Account, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
-import { aptosClient } from "@/utils/aptosClient";
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 export function CreateCampaignReview() {
   const [campaignWallet, setCampaignWallet] = useState<string>("");
@@ -18,7 +14,7 @@ export function CreateCampaignReview() {
   const [token, setToken] = useState<string>();
   const navigate = useNavigate();
   const { account, signAndSubmitTransaction } = useWallet();
-  const [transactionInProgress, setTransactionInProgress] = useState<boolean>(false);
+  const [_transactionInProgress, setTransactionInProgress] = useState<boolean>(false);
   console.log("Account:", account);
   console.log("Connected:", account?.address.data.toString());
 
@@ -76,7 +72,7 @@ export function CreateCampaignReview() {
           <h1 className="text-1xl">5 of 5</h1>
           <h1 className="text-5xl font-bold text-center">Review Your Campaign</h1>
           <p className="text-gray-400 text-center">
-            A strong, high-quality image creates a connection and makes your page more visually appealing.
+            Look over your campaign details before launcing. <br></br>You can go back to edit any of the details.
           </p>
         </div>
         <div className="right flex flex-col h-full w-full overflow-y-auto">
@@ -120,15 +116,15 @@ export function CreateCampaignReview() {
 
           {/* Buttons */}
           <div className="flex flex-col w-full px-4 mt-auto py-4">
-            <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+            <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
-                className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+                className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
                 style={{ width: "100%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>
           <div className="flex justify-end justify-between w-full">
-            <Button className="self-start" onClick={() => navigate("/wallet")}>
+            <Button variant={"lightGrey"} className="self-start" onClick={() => navigate("/wallet")}>
               Back
             </Button>
             <Button
@@ -159,7 +155,7 @@ export function CreateCampaignReview() {
                       "0x48ec5a271bf9e5b66cd656480b10a90e032e7e202ff2637b91db2f5874e54f00::campaign_manager::create_campaign",
                     functionArguments: [
                       ,
-                      goalAmount,
+                      /*META DATA */ goalAmount,
                       campaignWallet,
                       campaignTitle,
                       campaignDescription,

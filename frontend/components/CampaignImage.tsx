@@ -111,7 +111,8 @@ export function CreateCampaignImage() {
           <h1 className="text-1xl">3 of 5</h1>
           <h1 className="text-5xl font-bold text-center">Add Media</h1>
           <p className="text-gray-400 text-center">
-            A strong, high-quality image creates a connection and makes your page more visually appealing.
+            A personal and high-quality image helps create connections with contributors and makes your page more
+            visually appealing.
           </p>
         </div>
         <div className="right flex flex-col h-full w-full">
@@ -150,7 +151,7 @@ export function CreateCampaignImage() {
                     <img src={campaignImage as string} alt="Cropped" className="w-full h-64 object-cover rounded-md" />
                     <div className="flex justify-between mt-4">
                       <Button onClick={handleReupload}>Reupload</Button>
-                      <Button onClick={handleEditCrop}>Edit Crop</Button>
+                      <Button onClick={handleEditCrop}>Crop</Button>
                     </div>
                   </div>
                 )}
@@ -160,15 +161,15 @@ export function CreateCampaignImage() {
 
           {/* Buttons at the bottom */}
           <div className="flex flex-col w-full px-4 mt-auto">
-            <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+            <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
-                className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+                className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
                 style={{ width: "60%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>
           <div className="flex justify-end justify-between w-full">
-            <Button className="self-start" onClick={() => navigate("/description")}>
+            <Button variant={"lightGrey"} className="self-start" onClick={() => navigate("/description")}>
               Back
             </Button>
             <Button className="self-end" onClick={() => navigate("/wallet")} disabled={!campaignImage}>

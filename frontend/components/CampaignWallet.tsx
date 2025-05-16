@@ -50,15 +50,14 @@ export function CreateCampaignWallet() {
           </span>
           <h1 className="text-1xl">4 of 5</h1>
           <h1 className="text-5xl font-bold text-center">Select Wallet Address</h1>
-          <p className="text-gray-400 text-center">
-            A strong, high-quality image creates a connection and makes your page more visually appealing.
-          </p>
+          <p className="text-gray-400 text-center">Where do you wish to receieve incoming funds?</p>
         </div>
         <div className="right flex flex-col h-full w-full">
           {/* Starting Goal and Input at 60% height */}
           <div className="flex flex-col space-y-4 w-4/5 mx-auto mt-auto">
             <h1 className="font-bold">Input Wallet Address:</h1>
             <Input
+              placeholder="0x1234..."
               value={campaignWallet.toString() || ""}
               onChange={(e) => setCampaignWallet(e.target.value)}
               // className="pr-20" // Add padding to the right to make space for the dropdown
@@ -78,15 +77,15 @@ export function CreateCampaignWallet() {
 
           {/* Buttons at the bottom */}
           <div className="flex flex-col w-full px-4 mt-auto">
-            <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+            <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
-                className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+                className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
                 style={{ width: "80%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>
           <div className="flex justify-end justify-between w-full">
-            <Button className="self-start" onClick={() => navigate("/image")}>
+            <Button variant={"lightGrey"} className="self-start" onClick={() => navigate("/image")}>
               Back
             </Button>
             <Button className="self-end" onClick={() => navigate("/review")} disabled={!campaignWallet}>

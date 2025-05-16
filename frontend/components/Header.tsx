@@ -10,13 +10,13 @@ export function Header({
   onCampaignsUpdate: (updatedCampaigns: any[]) => void;
 }) {
   return (
-    <div className="bg-blue-500 flex items-center justify-between px-4 py-2 w-full flex-nowrap overflow-x-auto">
+    <div className="bg-[#d0eaff] to-transparent flex items-center justify-between px-4 py-4 w-full flex-nowrap overflow-x-auto">
       <h1 className="display">Pledgr</h1>
 
-      <div className="flex gap-2 items-center flex-wrap w-full max-w-lg">
+      <div className="flex gap-5 items-center flex-wrap w-full max-w-lg">
         <SearchCampaign campaigns={campaigns} onCampaignsUpdate={onCampaignsUpdate} />
       </div>
-      <div className="flex gap-2 items-center flex-nowrap">
+      <div className="flex gap-4 items-center flex-nowrap">
         <AddCampaign />
         <WalletSelector />
       </div>

@@ -67,7 +67,7 @@ export function CreateCampaign() {
             </span>
             <h1>1 of 5</h1>
             <h1 className="text-5xl font-bold text-center">Set Your Goal</h1>
-            <p className="text-gray-40 text-center">TEMP</p>
+            <p className="text-gray-40 text-center">What amount are you aiming to raise?</p>
           </div>
           <div className="right flex flex-col h-full w-full">
             {/* Starting Goal and Input at 60% height */}
@@ -95,9 +95,9 @@ export function CreateCampaign() {
 
             {/* Buttons at the bottom */}
             <div className="flex flex-col w-full px-4 mt-auto">
-              <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
+              <div className="relative w-full h-1 bg-gray-300 rounded-full mb-4">
                 <div
-                  className="absolute top-0 left-0 h-1 bg-blue-500 rounded-full"
+                  className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
                   style={{ width: "20%" }} // Adjust width based on the current step
                 ></div>
               </div>
@@ -120,7 +120,7 @@ export function CreateCampaign() {
             <div className="flex justify-between items-center">
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button>Connect a Wallet</Button>
+                  <Button variant={"gradient"}>Connect a Wallet</Button>
                 </DialogTrigger>
                 <ConnectWalletDialog close={closeDialog} />
               </Dialog>
