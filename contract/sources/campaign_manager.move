@@ -14,11 +14,11 @@ module campaign_manager_addr::campaign_manager {
 
     #[event]
     struct CampaignCreatedEvent has drop, store {
+        campaign_num: u64,
         escrow_address: address,
     }
 
     struct Campaign has store, drop, key {
-        num: u64,
         fa_metadata: Object<Metadata>,
         goal: u64,
         recipient: address,
@@ -56,7 +56,6 @@ module campaign_manager_addr::campaign_manager {
         let campaign_table = borrow_global_mut<CampaignTable>(creator_addr);
         campaign_table.next_num += 1;
         let new_campaign = Campaign {
-            num: campaign_table.next_num,
             fa_metadata,
             goal,
             recipient,
@@ -75,7 +74,7 @@ module campaign_manager_addr::campaign_manager {
         let escrow_address = object::address_from_constructor_ref(&constructor_ref);
 
         table::add(&mut campaign_table.table, campaign_table.next_num, new_campaign);
-        0x1::event::emit(CampaignCreatedEvent {escrow_address});
+        0x1::event::emit(CampaignCreatedEvent { campaign_num: campaign_table.next_num, escrow_address });
     }
  
     public entry fun contribute_to_campaign(
