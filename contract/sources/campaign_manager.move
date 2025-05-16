@@ -2,7 +2,6 @@ module campaign_manager_addr::campaign_manager {
     use std::string::{String};
     use std::signer;
     use aptos_std::table::{Self, Table};
-    use aptos_framework::dispatchable_fungible_asset;
     use aptos_framework::fungible_asset::{Self, Metadata, FungibleStore};
     use aptos_framework::object::{Self, Object};
     use aptos_framework::primary_fungible_store;
@@ -16,6 +15,11 @@ module campaign_manager_addr::campaign_manager {
     struct CampaignCreatedEvent has drop, store {
         campaign_num: u64,
         escrow_address: address,
+    }
+
+    #[event]
+    struct GoalReachedEvent has drop, store {
+        goal: u64,
     }
 
     struct Campaign has store, drop, key {
@@ -64,7 +68,7 @@ module campaign_manager_addr::campaign_manager {
             image_url,
         };
 
-        let constructor_ref = object::create_object(creator_addr);
+        let constructor_ref = object::create_object(@campaign_manager_addr);
         let object_signer = object::generate_signer(&constructor_ref);
         let extend_ref = object::generate_extend_ref(&constructor_ref);
         
@@ -93,15 +97,17 @@ module campaign_manager_addr::campaign_manager {
         let contributor_addr = signer::address_of(contributor);
         
         let user_primary_store = primary_fungible_store::primary_store_inlined(contributor_addr, fa_metadata);
-        dispatchable_fungible_asset::transfer(contributor, user_primary_store, escrow_obj, amount);
+        fungible_asset::transfer(contributor, user_primary_store, escrow_obj, amount);
         0x1::event::emit(ContributionEvent {});
 
-        if (primary_fungible_store::balance(escrow_address, fa_metadata) >= campaign.goal) {
+        let curr_balance = fungible_asset::balance(escrow_obj);
+        if (curr_balance >= campaign.goal) {
             let extend_ref = &borrow_global<ObjectController>(escrow_address).extend_ref;
             let object_signer = object::generate_signer_for_extending(extend_ref);
 
             let recipient_primary_store = primary_fungible_store::primary_store_inlined(campaign.recipient, fa_metadata);
-            dispatchable_fungible_asset::transfer(&object_signer, escrow_obj, recipient_primary_store, amount);
+            fungible_asset::transfer(&object_signer, escrow_obj, recipient_primary_store, curr_balance);
+            0x1::event::emit(GoalReachedEvent { goal: campaign.goal });
             // TODO: maybe emit event?
         };
     }
