@@ -13,20 +13,19 @@ export function CreateCampaignImage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-      const savedCampaignImage = localStorage.getItem("campaignImage");
-        if (savedCampaignImage) setCampaignImage(savedCampaignImage);
-      const savedImageSrc = localStorage.getItem("imageSrc");
-        if (savedImageSrc) setImageSrc(savedImageSrc);
+    const savedCampaignImage = localStorage.getItem("campaignImage");
+    if (savedCampaignImage) setCampaignImage(savedCampaignImage);
+    const savedImageSrc = localStorage.getItem("imageSrc");
+    if (savedImageSrc) setImageSrc(savedImageSrc);
+  }, []);
+  useEffect(() => {
+    if (campaignImage !== null && campaignImage !== undefined) {
+      localStorage.setItem("campaignImage", campaignImage);
     }
-    , []);
-    useEffect(() => {
-      if (campaignImage !== null && campaignImage !== undefined) {
-        localStorage.setItem("campaignImage", campaignImage);
-      }
-      if (imageSrc !== null && imageSrc !== undefined) {
-        localStorage.setItem("imageSrc", imageSrc);
-      }
-    }, [campaignImage, imageSrc]);
+    if (imageSrc !== null && imageSrc !== undefined) {
+      localStorage.setItem("imageSrc", imageSrc);
+    }
+  }, [campaignImage, imageSrc]);
 
   const getCroppedImg = async (imageSrc: string, crop: any) => {
     const image = new Image();
@@ -39,17 +38,7 @@ export function CreateCampaignImage() {
     canvas.width = crop.width;
     canvas.height = crop.height;
 
-    ctx?.drawImage(
-      image,
-      crop.x,
-      crop.y,
-      crop.width,
-      crop.height,
-      0,
-      0,
-      crop.width,
-      crop.height
-    );
+    ctx?.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
 
     return new Promise<string>((resolve) => {
       canvas.toBlob((blob) => {
@@ -90,7 +79,7 @@ export function CreateCampaignImage() {
   };
 
   const handleEditCrop = () => {
-    setCampaignImage(null); 
+    setCampaignImage(null);
     setShowCropper(true); // Show the cropper again for editing
   };
 
@@ -98,26 +87,27 @@ export function CreateCampaignImage() {
     <div className="relative">
       <div className="flex w-full" style={{ backgroundColor: "#f0f0f0" }}>
         <div className="left flex flex-col items-center justify-center space-y-4">
-        <span
-      onClick={() => navigate("/")}
-      className="absolute top-7 left-7 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={2}
-        stroke="currentColor"
-        className="w-8 h-8 mr-1"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M3 9.75L12 3l9 6.75M4.5 10.5V21h15v-10.5"
-        />
-      </svg>
-      <span className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center" style={{ marginTop: "6%" }}>Pledgr</span>
-    </span>
+          <span
+            onClick={() => navigate("/")}
+            className="absolute top-7 left-7 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-8 h-8 mr-1"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 3l9 6.75M4.5 10.5V21h15v-10.5" />
+            </svg>
+            <span
+              className="ml-1 text-2xl text-blue-500 cursor-pointer hover:underline flex items-center"
+              style={{ marginTop: "6%" }}
+            >
+              Pledgr
+            </span>
+          </span>
           <h1 className="text-1xl">3 of 5</h1>
           <h1 className="text-5xl font-bold text-center">Add Media</h1>
           <p className="text-gray-400 text-center">
@@ -133,28 +123,22 @@ export function CreateCampaignImage() {
                 onClick={() => document.getElementById("fileInput")?.click()}
               >
                 <span className="text-gray-400 text-xl">+</span>
-                <input
-                  id="fileInput"
-                  type="file"
-                  accept="image/*"
-                  onChange={onFileChange}
-                  className="hidden"
-                />
+                <input id="fileInput" type="file" accept="image/*" onChange={onFileChange} className="hidden" />
               </div>
             ) : (
               <div>
                 {showCropper ? (
                   <div className="relative w-full h-64">
                     <div className="relative w-full h-64">
-                    <Cropper
-                      image={imageSrc || undefined}
-                      crop={crop}
-                      zoom={zoom}
-                      aspect={4 / 3}
-                      onCropChange={setCrop}
-                      onZoomChange={setZoom}
-                      onCropComplete={onCropComplete}
-                    />
+                      <Cropper
+                        image={imageSrc || undefined}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={4 / 3}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
                     </div>
                     <div className="flex justify-between mt-4">
                       <Button onClick={handleReupload}>Reupload</Button>
@@ -163,11 +147,7 @@ export function CreateCampaignImage() {
                   </div>
                 ) : (
                   <div>
-                    <img
-                      src={campaignImage as string}
-                      alt="Cropped"
-                      className="w-full h-64 object-cover rounded-md"
-                    />
+                    <img src={campaignImage as string} alt="Cropped" className="w-full h-64 object-cover rounded-md" />
                     <div className="flex justify-between mt-4">
                       <Button onClick={handleReupload}>Reupload</Button>
                       <Button onClick={handleEditCrop}>Edit Crop</Button>
@@ -191,11 +171,7 @@ export function CreateCampaignImage() {
             <Button className="self-start" onClick={() => navigate("/description")}>
               Back
             </Button>
-            <Button
-              className="self-end"
-              onClick={() => navigate("/wallet")}
-              disabled={!campaignImage}
-            >
+            <Button className="self-end" onClick={() => navigate("/wallet")} disabled={!campaignImage}>
               Continue
             </Button>
           </div>

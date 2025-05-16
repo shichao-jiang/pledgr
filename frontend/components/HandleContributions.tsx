@@ -1,4 +1,3 @@
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { AptosClient, Types } from "aptos";
 
 // Constants
@@ -19,7 +18,6 @@ function getTypeForToken(token: string): string {
   }
   return type;
 }
-
 
 // Main function to call your Move function
 export async function contributeToCampaign({
@@ -54,9 +52,8 @@ export async function contributeToCampaign({
     const txHash = await wallet.signAndSubmitTransaction(payload);
     await client.waitForTransaction(txHash);
     return txHash;
-    } catch (error) {
+  } catch (error) {
     console.error("Transaction failed:", error);
     throw error;
-    }
-
+  }
 }

@@ -9,9 +9,7 @@ export default defineConfig({
   server: {
     open: true,
   },
-  plugins: [
-    react(),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./frontend"),
