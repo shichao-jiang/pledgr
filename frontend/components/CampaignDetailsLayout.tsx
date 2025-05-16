@@ -42,9 +42,9 @@ export function CampaignDetails() {
             <div className="flex items-center justify-between mb-6">
               {/* Raised Amount Info on the left */}
               <div className="text-left">
-                <h2 className="text-3xl font-bold text-gray-900">${campaign.raised.toLocaleString()} raised</h2>
+                <h2 className="text-3xl font-bold text-gray-900">{campaign.raised.toLocaleString()}APT Raised</h2>
                 <p className="text-sm text-gray-500">
-                  ${campaign.goal.toLocaleString()} goal · {campaign.amount_donations} donations
+                  {campaign.goal.toLocaleString()}APT Goal · {campaign.amount_donations} Donations
                 </p>
               </div>
 
@@ -69,8 +69,8 @@ export function CampaignDetails() {
                 <span>{campaign.status}</span> */}
               </div>
               <div className="flex justify-between text-sm">
-                <span className="font-medium">End Date:</span>
-                <span>{new Date(campaign.endDate).toLocaleDateString()}</span>
+                {/* <span className="font-medium">End Date:</span> */}
+                {/* <span>{new Date(campaign.endDate).toLocaleDateString()}</span> */}
               </div>
 
               <div className="mt-6">
@@ -95,6 +95,7 @@ export function CampaignDetails() {
 
             <ContributionForm
               campaign={{
+                escrow_address: campaign.escrow_address,
                 campaign_num: campaign.campaign_num,
                 id: campaign.id,
                 imageUrl: campaign.imageUrl,

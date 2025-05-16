@@ -48,7 +48,7 @@ export function CreateCampaignWallet() {
               Pledgr
             </span>
           </span>
-          <h1 className="text-1xl">4 of 5</h1>
+          <h1 className="text-1xl">4 of 4</h1>
           <h1 className="text-5xl font-bold text-center">Select Wallet Address</h1>
           <p className="text-gray-400 text-center">Where do you wish to receieve incoming funds?</p>
         </div>
@@ -80,7 +80,7 @@ export function CreateCampaignWallet() {
             <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
                 className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
-                style={{ width: "80%" }} // Adjust width based on the current step
+                style={{ width: "100%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>

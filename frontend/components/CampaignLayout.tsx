@@ -26,7 +26,11 @@ export function CreateCampaign() {
     const savedGoalAmount = localStorage.getItem("goalAmount");
     const savedToken = localStorage.getItem("token");
     if (savedGoalAmount) setGoalAmount(parseFloat(savedGoalAmount));
-    if (savedToken) setToken(savedToken);
+    if (savedToken) {
+      setToken(savedToken);
+    } else {
+      setToken("0xa"); // Default token
+    }
   }, [connected]);
 
   useEffect(() => {
@@ -37,6 +41,12 @@ export function CreateCampaign() {
       localStorage.setItem("token", token);
     }
   }, [goalAmount, token]);
+
+  const tokenNames: { [key: string]: string } = {
+    "0xa": "APT",
+    "0xb": "FA",
+    "0xc": "YMC",
+  };
 
   return (
     <div className="relative">
@@ -65,9 +75,9 @@ export function CreateCampaign() {
                 Pledgr
               </span>
             </span>
-            <h1>1 of 5</h1>
+            <h1>1 of 4</h1>
             <h1 className="text-5xl font-bold text-center">Set Your Goal</h1>
-            <p className="text-gray-40 text-center">What amount are you aiming to raise?</p>
+            <p className="text-gray-400 text-center">What amount are you aiming to raise?</p>
           </div>
           <div className="right flex flex-col h-full w-full">
             {/* Starting Goal and Input at 60% height */}
@@ -75,7 +85,7 @@ export function CreateCampaign() {
               <h1 className="font-bold">Your Starting Goal:</h1>
               <div className="relative">
                 <Input
-                  placeholder="$100"
+                  placeholder={`1000${token ? ` ${tokenNames[token]}` : ""}`}
                   value={goalAmount || ""}
                   onChange={(e) => setGoalAmount(parseFloat(e.target.value))}
                   className="pr-20" // Add padding to the right to make space for the dropdown
@@ -85,10 +95,9 @@ export function CreateCampaign() {
                   value={token}
                   onChange={(e) => setToken(e.target.value)} // Replace with your currency handling logic
                 >
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
-                  <option value="JPY">JPY</option>
+                  <option value="0xa">APT</option>
+                  <option value="0xb">FA</option>
+                  <option value="0xc">YMC</option>
                 </select>
               </div>
             </div>
@@ -98,7 +107,7 @@ export function CreateCampaign() {
               <div className="relative w-full h-1 bg-gray-300 rounded-full mb-4">
                 <div
                   className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
-                  style={{ width: "20%" }} // Adjust width based on the current step
+                  style={{ width: "25%" }} // Adjust width based on the current step
                 ></div>
               </div>
             </div>

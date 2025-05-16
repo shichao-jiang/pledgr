@@ -51,7 +51,7 @@ export function CreateCampaignDescription() {
             </span>
           </span>
           <h1 className="text-1xl" style={{ marginTop: "35%" }}>
-            2 of 5
+            2 of 4
           </h1>
           <h1 className="text-5xl font-bold text-center">Tell Us Why You're Campaigning</h1>
           <div className="text-gray-400 text-left mt-12 mb-10 px-4" style={{ marginTop: "10%" }}>
@@ -87,7 +87,7 @@ export function CreateCampaignDescription() {
             <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
                 className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
-                style={{ width: "40%" }} // Adjust width based on the current step
+                style={{ width: "50%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>

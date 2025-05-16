@@ -6,6 +6,7 @@ import { ConnectWalletDialog } from "@/components/WalletSelector";
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 interface Campaign {
+  escrow_address: string;
   campaign_num: number;
   id: string;
   imageUrl: string;
@@ -29,8 +30,6 @@ export function ContributionForm({ campaign, close }: ContributionFormProps) {
   const [_transactionInProgress, setTransactionInProgress] = useState<boolean>(false);
   const [walletDialogOpen, setWalletDialogOpen] = useState(false);
   const [amount, setAmount] = useState<number | "">("");
-
-  const fixedTokenType = campaign.token;
 
   useEffect(() => {
     if (connected) {
@@ -94,7 +93,7 @@ export function ContributionForm({ campaign, close }: ContributionFormProps) {
           <label className="mb-1 font-medium text-gray-700">Token</label>
           <div className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700">
             {/* You can swap this icon for actual token logos */}
-            <span className="text-sm font-semibold">{fixedTokenType}</span>
+            <span className="text-sm font-semibold">APT</span>
           </div>
         </div>
       </div>
@@ -116,13 +115,12 @@ export function ContributionForm({ campaign, close }: ContributionFormProps) {
             const transaction: InputTransactionData = {
               data: {
                 function:
-                  "0x48ec5a271bf9e5b66cd656480b10a90e032e7e202ff2637b91db2f5874e54f00::campaign_manager::contribute_to_campaign",
-                typeArguments: ["0x1::aptos_coin::AptosCoin"], // Specify the CoinType here
+                  "0x839cae61ca88d71477e65ebf54915cb23347b444289fa9eeb6372bd64e561718::campaign_manager::contribute_to_campaign",
                 functionArguments: [
                   campaign.recipientAddress,
-                  campaign.campaign_num /*META DATA */,
-                  ,
-                  account.address,
+                  campaign.campaign_num,
+                  "0xa",
+                  campaign.escrow_address,
                   amount,
                 ],
               },

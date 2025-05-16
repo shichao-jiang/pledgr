@@ -108,7 +108,7 @@ export function CreateCampaignImage() {
               Pledgr
             </span>
           </span>
-          <h1 className="text-1xl">3 of 5</h1>
+          <h1 className="text-1xl">3 of 4</h1>
           <h1 className="text-5xl font-bold text-center">Add Media</h1>
           <p className="text-gray-400 text-center">
             A personal and high-quality image helps create connections with contributors and makes your page more
@@ -164,7 +164,7 @@ export function CreateCampaignImage() {
             <div className="relative w-full h-1 bg-gray-200 rounded-full mb-4">
               <div
                 className="absolute top-0 left-0 h-1 bg-blue-400 rounded-full"
-                style={{ width: "60%" }} // Adjust width based on the current step
+                style={{ width: "75%" }} // Adjust width based on the current step
               ></div>
             </div>
           </div>

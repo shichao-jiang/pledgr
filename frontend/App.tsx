@@ -8,96 +8,34 @@ import { CampaignDetails } from "./components/CampaignDetailsLayout";
 import { CreateCampaignWallet } from "./components/CampaignWallet";
 import { CreateCampaignReview } from "./components/CapaignReview";
 import { useState, useEffect } from "react";
-// import HungerImage from "./temp_photos/pexels-henri-mathieu-5898312.jpeg";
 import { checkEvents } from "../backend/quickstart";
-// Sample Data jut for now
-//   const initialCampaigns = [
-//   {
-//     id: 1,
-//     imageUrl: 'https://via.placeholder.com/300',
-//     title: 'Save the Ocean',
-//     description: 'Join us to clean the oceans and protect marine life.',
-//     recipientAddress: '0x123...ocean',
-//     token: 'USDC',
-//     raised: 4200,
-//     goal: 10000,
-//     status: 'active',
-//     endDate: '2025-07-01',
-//   },
-//   {
-//     id: 2,
-//     imageUrl: 'https://via.placeholder.com/300',
-//     title: 'Plant Trees',
-//     description: 'Help us plant trees to fight climate change.',
-//     recipientAddress: '0x456...trees',
-//     token: 'USDC',
-//     raised: 8000,
-//     goal: 8000,
-//     status: 'completed',
-//     endDate: '2025-05-01',
-//   },
-//   {
-//     id: 3,
-//     imageUrl: HungerImage,
-//     title: 'Feed the Hungry',
-//     description: 'Donate to provide meals to those in need.',
-//     recipientAddress: '0x789...hunger',
-//     token: 'APT',
-//     raised: 1500,
-//     goal: 5000,
-//     status: 'active',
-//     endDate: '2025-06-15',
-//   },
-//   {
-//     id: 4,
-//     imageUrl: 'https://via.placeholder.com/300',
-//     title: 'Save the Forests',
-//     description: 'Support efforts to protect and restore forests.',
-//     recipientAddress: '0x987...forest',
-//     token: 'ETH',
-//     raised: 2500,
-//     goal: 10000,
-//     status: 'active',
-//     endDate: '2025-08-30',
-//   },
-//   {
-//     id: 5,
-//     imageUrl: 'https://via.placeholder.com/300',
-//     title: 'Clean Water for All',
-//     description: 'Help provide access to clean drinking water in underserved areas.',
-//     recipientAddress: '0x321...water',
-//     token: 'DAI',
-//     raised: 6000,
-//     goal: 12000,
-//     status: 'active',
-//     endDate: '2025-09-15',
-//   },
-// ];
+
 function Home() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
       const test = await checkEvents();
-      if (test[0]) {
+      if (test) {
         const updatedCampaigns = test;
         console.log("updatedCampaigns", updatedCampaigns);
         setCampaigns(updatedCampaigns);
       } else {
         console.log("No events found or invalid response.");
       }
+      setLoading(false);
     };
 
     // Fetch events immediately
     fetchEvents();
+
     // Run fetchEvents every 5 seconds
     // const intervalId = setInterval(fetchEvents, 5000);
 
     // // Cleanup interval on component unmount
     // return () => clearInterval(intervalId);
   }, []);
-
-  // console.log("campaigns[2].imageUrl", campaigns[2].imageUrl);
 
   useEffect(() => {
     localStorage.setItem("initialCampaigns", JSON.stringify(campaigns));
@@ -121,9 +59,18 @@ function Home() {
     <>
       {/* <TopBanner /> */}
       <Header campaigns={campaigns} onCampaignsUpdate={handleCampaignsUpdate} />
-      <div className="flex items-center justify-center flex-col">
-        <CampaignsGrid campaigns={campaigns} />
-      </div>
+      {loading ? ( // Use a ternary operator for conditional rendering
+        <div
+          className="text-gray-400 text-2xl flex items-center justify-center h-screen"
+          style={{ marginBottom: "40%" }}
+        >
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center flex-col">
+          <CampaignsGrid campaigns={campaigns} />
+        </div>
+      )}
     </>
   );
 }

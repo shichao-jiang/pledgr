@@ -2,6 +2,7 @@ import { ClientConfig, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { APTOS_API_KEY, NETWORK } from "../frontend/constants";
 
 interface Campaign {
+  escrow_address: string;
   campaign_num: number;
   id: string;
   imageUrl: string;
@@ -37,11 +38,10 @@ export async function checkEvents(): Promise<Campaign[]> {
   //     console.log(events);
   //     console.log("Events fetched successfully");
   // });
-
   const events = await aptos
     .getModuleEventsByEventType({
       eventType:
-        "0x48ec5a271bf9e5b66cd656480b10a90e032e7e202ff2637b91db2f5874e54f00::campaign_manager::CampaignCreatedEvent",
+        "0x839cae61ca88d71477e65ebf54915cb23347b444289fa9eeb6372bd64e561718::campaign_manager::CampaignCreatedEvent",
     })
     .catch((error) => {
       console.error("Error fetching events:", error);
@@ -50,7 +50,7 @@ export async function checkEvents(): Promise<Campaign[]> {
   const contributors = await aptos
     .getModuleEventsByEventType({
       eventType:
-        "0x48ec5a271bf9e5b66cd656480b10a90e032e7e202ff2637b91db2f5874e54f00::campaign_manager::ContributionEvent",
+        "0x839cae61ca88d71477e65ebf54915cb23347b444289fa9eeb6372bd64e561718::campaign_manager::ContributionEvent",
     })
     .catch((error) => {
       console.error("Error fetching events:", error);
@@ -80,16 +80,22 @@ export async function checkEvents(): Promise<Campaign[]> {
           console.log("Transaction Payload:", payload); // Access the `data` field
           console.log("Transaction Arguments:", args); // Access the `data` field
 
-          const campaign_num = args[0];
-          const token = args[1];
-          const goal = args[2];
-          const recipientAddress = args[3];
-          const title = args[4];
-          const description = args[5];
-          const imageUrl = args[6];
+          const data = event.data;
+          console.log("Event Datay:", data.campaign_num); // Access the `data` field
+          console.log("Event Datax:", data.escrow_address);
+
+          const campaign_num = data.campaign_num; //FIX
+          const escrow_address = data.escrow_address;
+          const token = args[0];
+          const goal = args[1];
+          const recipientAddress = args[2];
+          const title = args[3];
+          const description = args[4];
+          const imageUrl = args[5];
           const id = transaction_version;
 
           const campaign: Campaign = {
+            escrow_address: escrow_address,
             campaign_num: campaign_num,
             id: id,
             imageUrl: imageUrl,
@@ -139,8 +145,8 @@ export async function checkEvents(): Promise<Campaign[]> {
 
           const recipientAddress = args[0];
           //const campaign_num = args[1];
-          const campaign_num = filtered_campaigns[0].campaign_num;
-          const amount = args[2];
+          const campaign_num = args[1];
+          const amount = args[4];
           const id = transaction_version;
           const contribution: Contribution = {
             id: id,
@@ -150,7 +156,11 @@ export async function checkEvents(): Promise<Campaign[]> {
           };
 
           filtered_campaigns.forEach((campaign) => {
-            if (campaign.recipientAddress === recipientAddress && campaign.campaign_num === campaign_num) {
+            if (
+              campaign.recipientAddress === recipientAddress &&
+              Number(campaign.campaign_num) === Number(campaign_num)
+            ) {
+              console.log("Matching Campaign Found:");
               campaign.amount_donations += 1;
               campaign.raised += Number(amount);
             }
